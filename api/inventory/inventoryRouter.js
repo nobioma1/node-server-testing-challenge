@@ -6,4 +6,16 @@ inventoryRouter.get('/inventory', async (req, res) => {
   res.status(200).json(products);
 });
 
+inventoryRouter.delete('/inventory/:id', async (req, res) => {
+  try {
+    const product = await Inventory.remove(req.params.id);
+    if (product) {
+      return res.status(204).end();
+    }
+    throw new Error();
+  } catch (error) {
+    res.status(500).json({ error: 'Error deleting product' });
+  }
+});
+
 module.exports = inventoryRouter;
