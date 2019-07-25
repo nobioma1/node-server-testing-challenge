@@ -78,5 +78,20 @@ describe('Inventory', () => {
           expect(res.body).toHaveLength(2);
         });
     });
+
+    it('[DELETE] /inventory/:id should remove item', async () => {
+      const { item1, item2 } = testItems;
+      await Inventory.insert(item1);
+      await Inventory.insert(item2);
+      await request(server)
+        .delete('/api/inventory/1')
+        .expect(204);
+    });
+
+    it('[DELETE] /inventory/:id should remove item', async () => {
+      await request(server)
+        .delete('/api/inventory/1')
+        .expect(500);
+    });
   });
 });
