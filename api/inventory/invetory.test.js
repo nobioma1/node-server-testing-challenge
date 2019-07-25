@@ -93,5 +93,27 @@ describe('Inventory', () => {
         .delete('/api/inventory/1')
         .expect(500);
     });
+
+    it('[POST] /inventory should create new item', async () => {
+      const { item1 } = testItems;
+      await request(server)
+        .post('/api/inventory')
+        .send(item1)
+        .expect(201)
+        .then(res => {
+          expect(res.body).toHaveProperty('name', item1.name);
+          expect(res.body).toHaveProperty('category', item1.category);
+          expect(res.body).toHaveProperty('serial', item1.serial);
+        });
+    });
+
+    it('[POST] /inventory should create new item', async () => {
+      await request(server)
+        .post('/api/inventory')
+        .expect(500)
+        .then(res => {
+          expect(res.body).toEqual({ error: 'Error creating product' });
+        });
+    });
   });
 });
