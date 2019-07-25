@@ -3,13 +3,13 @@ exports.up = knex => knex.schema.createTable('products', (table) => {
     .increments();
   table
     .string('name', 128)
-    .unique()
     .notNullable();
   table
     .string('category')
     .notNullable();
   table
     .string('serial')
+    .unique()
     .notNullable();
   table
     .timestamp('created_at')
