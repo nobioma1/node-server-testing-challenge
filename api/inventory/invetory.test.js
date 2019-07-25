@@ -1,5 +1,7 @@
+const request = require('supertest');
 const db = require('../../data/dbConfig');
 const Inventory = require('./inventoryModel');
+const server = require('../server');
 
 beforeEach(async () => {
   await db('products').truncate();
@@ -39,7 +41,7 @@ describe('Inventory', () => {
     });
 
     it('Should get a product by id', async () => {
-      const { item1 } = testItems
+      const { item1 } = testItems;
       await Inventory.insert(item1);
       const product = await Inventory.findById(1);
       expect(product).toHaveProperty('name', item1.name);
@@ -48,13 +50,33 @@ describe('Inventory', () => {
     });
 
     it('Should delete a product', async () => {
-      const { item1, item2 } = testItems
+      const { item1, item2 } = testItems;
       await Inventory.insert(item1);
       await Inventory.insert(item2);
       await Inventory.remove(1);
       const products = await Inventory.getAll();
       expect(products).toHaveLength(1);
       expect(products[0]).toHaveProperty('name', item2.name);
+    });
+  });
+
+  describe('Inventory Router', () => {
+    it('[GET] /inventory should return status 200', async () => {
+      await request(server)
+        .get('/api/inventory')
+        .expect(200);
+    });
+
+    it('[GET] /inventory should return items', async () => {
+      const { item1, item2 } = testItems;
+      await Inventory.insert(item1);
+      await Inventory.insert(item2);
+      await request(server)
+        .get('/api/inventory')
+        .expect(200)
+        .then(res => {
+          expect(res.body).toHaveLength(2);
+        });
     });
   });
 });
