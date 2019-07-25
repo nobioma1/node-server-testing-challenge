@@ -1,8 +1,6 @@
-const generatePassword = require('../../api/helpers/generatePassword');
-
-exports.seed = knex => knex('users')
+exports.seed = knex => knex('products')
   .del()
-  .then(() => knex('users').insert([
+  .then(() => knex('products').insert([
     {
       name: 'Samsung',
       category: 'Phone',
