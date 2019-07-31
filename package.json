@@ -4,7 +4,12 @@
   "description": "Node Server Testing Challenge",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watch"
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "test": "cross-env DB_ENV=testing jest --watch --verbose",
+    "coverage": "cross-env DB_ENV=testing jest --watch --verbose --coverage",
+    "migrate-test": "npx knex migrate:latest --env=testing",
+    "migrate": "npx knex migrate:latest"
   },
   "jest": {
     "testEnvironment": "node"
@@ -25,6 +30,11 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "knex": "^0.19.1",
+    "nodemon": "^1.19.1",
+    "sqlite3": "^4.0.9"
   }
 }
